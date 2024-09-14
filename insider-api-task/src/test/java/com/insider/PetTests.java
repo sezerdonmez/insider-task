@@ -30,10 +30,10 @@ public class PetTests extends BaseTest {
                 "categoryId", category.getId().toString(),
                 "categoryName", category.getName());
 
-        Response response = petController.createPet(petMap, status);
+        Response response = petClient.createPet(petMap, status);
         Assert.assertEquals(response.statusCode(), SC_OK, "Response code should be " + SC_OK);
 
-        Response getPetResponse = petController.getPetWithId(Long.parseLong(petMap.get("id")));
+        Response getPetResponse = petClient.getPetWithId(Long.parseLong(petMap.get("id")));
         Assert.assertEquals(response.statusCode(), SC_OK, "Response code should be " + SC_OK);
 
         PetResponse pet = getPetResponse.as(PetResponse.class);
@@ -49,10 +49,10 @@ public class PetTests extends BaseTest {
                 "categoryId", category.getId().toString(),
                 "categoryName", category.getName());
 
-        Response response = petController.updatePet(petMap, status);
+        Response response = petClient.updatePet(petMap, status);
         Assert.assertEquals(response.statusCode(), SC_OK, "Response code should be " + SC_OK);
 
-        Response getPetResponse = petController.getPetWithId(Long.parseLong(petMap.get("id")));
+        Response getPetResponse = petClient.getPetWithId(Long.parseLong(petMap.get("id")));
         Assert.assertEquals(response.statusCode(), SC_OK, "Response code should be " + SC_OK);
 
         PetResponse pet = getPetResponse.as(PetResponse.class);
@@ -64,7 +64,7 @@ public class PetTests extends BaseTest {
     @Description("shouldGetCreatedPetWithId")
     @Test()
     public void shouldGetCreatedPetWithId() {
-        Response response = petController.getPetWithId(Long.parseLong(createdPetMap.get("id")));
+        Response response = petClient.getPetWithId(Long.parseLong(createdPetMap.get("id")));
         Assert.assertEquals(response.statusCode(), SC_OK, "Response code should be " + SC_OK);
 
         PetResponse pet = response.as(PetResponse.class);
@@ -76,7 +76,7 @@ public class PetTests extends BaseTest {
     @Description("shouldNotGetNotCreatedPetWithId")
     @Test()
     public void shouldNotGetNotCreatedPetWithId() {
-        Response response = petController.getPetWithId(deletedPetId);
+        Response response = petClient.getPetWithId(deletedPetId);
         Assert.assertEquals(response.statusCode(), SC_NOT_FOUND, "Response code should be " + SC_NOT_FOUND);
 
         ErrorResponse errorResponse = response.as(ErrorResponse.class);
@@ -88,21 +88,21 @@ public class PetTests extends BaseTest {
     @Description("shouldDeleteCreatedPetWithId")
     @Test()
     public void shouldDeleteCreatedPetWithId() {
-        Response response = petController.deletePetWithId(Long.parseLong(willDeletedPetMap.get("id")));
+        Response response = petClient.deletePetWithId(Long.parseLong(willDeletedPetMap.get("id")));
         Assert.assertEquals(response.statusCode(), SC_OK, "Response code should be " + SC_OK);
     }
 
     @Description("shouldNotDeleteNotCreatedPetWithId")
     @Test()
     public void shouldNotDeleteNotCreatedPetWithId() {
-        Response response = petController.deletePetWithId(deletedPetId);
+        Response response = petClient.deletePetWithId(deletedPetId);
         Assert.assertEquals(response.statusCode(), SC_NOT_FOUND, "Response code should be " + SC_NOT_FOUND);
     }
 
     @Description("shouldGetCreatedPetsWithStatus")
     @Test(dataProvider = "pet-statuses", dataProviderClass = DataProviderHelper.class)
     public void shouldGetCreatedPetsWithStatus(Status status) {
-        Response response = petController.getPetWithStatus(status.getName());
+        Response response = petClient.getPetWithStatus(status.getName());
         Assert.assertEquals(response.statusCode(), SC_OK, "Response code should be " + SC_OK);
 
         List<PetResponse> pets = response.body().jsonPath().getList(".", PetResponse.class);
@@ -112,7 +112,7 @@ public class PetTests extends BaseTest {
     @Description("shouldNotGetPetsWithWrongStatus")
     @Test()
     public void shouldNotGetPetsWithWrongStatus() {
-        Response response = petController.getPetWithStatus("wrong");
+        Response response = petClient.getPetWithStatus("wrong");
         Assert.assertEquals(response.statusCode(), SC_OK, "Response code should be " + SC_OK);
 
         List<PetResponse> pets = response.body().jsonPath().getList(".", PetResponse.class);

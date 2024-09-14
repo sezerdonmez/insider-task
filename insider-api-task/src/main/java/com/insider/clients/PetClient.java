@@ -1,4 +1,4 @@
-package com.insider.controllers;
+package com.insider.clients;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,11 +12,11 @@ import java.util.Map;
 
 import static com.insider.utils.Config.getProperty;
 
-public class PetController extends BaseController {
+public class PetClient extends BaseClient {
 
     private final String PATH = "/pet";
 
-    public PetController() {
+    public PetClient() {
         super(getProperty("baseUrl"));
     }
 

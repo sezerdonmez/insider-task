@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-import static com.insider.utils.LogUtils.logInfo;
+import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class Config {
@@ -32,12 +32,24 @@ public class Config {
     }
 
     public static String getEnv() {
+        String defaultEnv = "test";
         String env = System.getProperties().getProperty("env");
         if (isBlank(env)) {
-            logInfo("There is no env options set, please set -Denv in java. Now default environment will be set: test");
-            return "test";
+            LogUtils.logInfo(format("There is no env options set, please set -Denv in java. Now default environment will be set: %s", defaultEnv));
+            return defaultEnv;
         }
         return env;
+    }
+
+    public static String getBrowser() {
+        String defaultBrowser = loadProperties("test").getProperty("defaultBrowser");
+        String browser = System.getProperties().getProperty("browser");
+
+        if (isBlank(browser)) {
+            LogUtils.logInfo(format("There is no browser options set, please set -Dbrowser in java. Now default browser will be set: %s", defaultBrowser));
+            return defaultBrowser;
+        }
+        return browser;
     }
 
     private static int getFailedTestRetryCount() {

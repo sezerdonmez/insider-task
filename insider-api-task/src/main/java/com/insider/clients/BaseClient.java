@@ -1,6 +1,5 @@
-package com.insider.controllers;
+package com.insider.clients;
 
-import com.insider.listeners.TestListener;
 import com.insider.utils.LogUtils;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.response.Response;
@@ -13,11 +12,11 @@ import static java.lang.String.format;
 import static org.apache.http.HttpHeaders.CONTENT_TYPE;
 import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 
-public class BaseController extends TestListener {
+public class BaseClient {
 
     private final RequestSpecification spec;
 
-    public BaseController(String baseUrl) {
+    public BaseClient(String baseUrl) {
         this.spec = new RequestSpecBuilder().setBaseUri(baseUrl).setBasePath("/").build();
     }
 
