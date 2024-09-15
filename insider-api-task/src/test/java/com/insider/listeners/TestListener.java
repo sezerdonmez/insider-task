@@ -12,7 +12,7 @@ public class TestListener implements ITestListener {
     @Override
     public void onStart(ITestContext iTestContext) {
         try {
-            logInfo(iTestContext.getName() + "TESTS WILL START");
+            logInfo(iTestContext.getName() + " TESTS WILL START");
         } catch (ArrayIndexOutOfBoundsException e) {
             logError("Cannot started");
         }

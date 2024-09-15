@@ -6,6 +6,7 @@ import com.insider.enums.Status;
 import com.insider.listeners.TestListener;
 import com.insider.utils.LogUtils;
 import org.testng.Assert;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
 
@@ -41,14 +42,24 @@ public class BaseTest {
         Assert.assertEquals(petClient.createPet(willUpdatedPetMap, createdPetStatus).statusCode(), SC_OK);
         Assert.assertEquals(petClient.createPet(willDeletedPetMap, createdPetStatus).statusCode(), SC_OK);
 
-        LogUtils.logInfo("Test Datas inserted successfully");
+        LogUtils.logInfo("Test Datas inserted successfully before test");
 
-        // Delete Pet If Exist
+        // Delete Pet
         LogUtils.logInfo(format("Test Datas will be deleted before tests ids: %d", deletedPetId));
         petClient.deletePetWithId(deletedPetId);
 
-        LogUtils.logInfo("Test Datas deleted successfully");
+        LogUtils.logInfo("Test Datas deleted successfully before test");
     }
 
-    // Test sonunda silelim
+    @AfterSuite
+    public void afterTest() {
+        LogUtils.logInfo(format("Test Datas will be deleted after tests ids: %s %s %s",
+                createdPetMap.get("id"), willUpdatedPetMap.get("id"), willDeletedPetMap.get("id")));
+
+        petClient.deletePetWithId(Long.valueOf(createdPetMap.get("id")));
+        petClient.deletePetWithId(Long.valueOf(willUpdatedPetMap.get("id")));
+        petClient.deletePetWithId(Long.valueOf(willDeletedPetMap.get("id")));
+
+        LogUtils.logInfo("Test Datas deleted successfully after test");
+    }
 }
