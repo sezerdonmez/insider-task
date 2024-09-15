@@ -3,6 +3,7 @@ package com.insider.driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.io.File;
 import java.util.List;
 
 public interface Driver {
@@ -28,5 +29,5 @@ public interface Driver {
     void wait(int milliSec);
     boolean isElementExist(By locator);
     boolean isElementVisible(By locator);
-    void takeScreenshotAndSaveToFile(String testName);
+    File takeScreenshotAndSaveToFile(String testName);
 }

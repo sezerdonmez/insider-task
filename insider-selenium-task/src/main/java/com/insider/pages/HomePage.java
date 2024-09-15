@@ -4,6 +4,7 @@ import com.insider.driver.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+
 public class HomePage extends BasePage {
 
     private final By navigationBar = By.cssSelector("#navbarNavDropdown");

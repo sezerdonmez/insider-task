@@ -2,7 +2,6 @@ package com.insider.pages;
 
 import com.insider.driver.Driver;
 import com.insider.enums.PageTitle;
-import com.insider.helpers.StringHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -15,7 +14,6 @@ public class CareersPage extends BasePage {
     private final By mainTitle = By.cssSelector(".big-title");
     private final By categoryTitles = By.cssSelector(".category-title-media");
     private final By seeAllTeamsButton = By.cssSelector("[class*='loadmore']");
-    private final By locationCityNames = By.cssSelector(".location-info p");
     private final By locationRightArrowIcon = By.cssSelector(".icon-arrow-right");
     private final By locationLeftArrowIcon = By.cssSelector(".icon-arrow-left");
     private final By locationProgressBar = By.cssSelector(".progress");
@@ -95,7 +93,9 @@ public class CareersPage extends BasePage {
     public CareersPage clickLocationRightArrowIcon() {
         String progressBarBefore = getElementAttribute(locationProgressBar, "style");
 
-        driver.findElement(locationRightArrowIcon).click();
+        WebElement rightArrowIcon = driver.findElement(locationRightArrowIcon);
+        driver.hoverToElement(rightArrowIcon);
+        rightArrowIcon.click();
         driver.waitUntilElementAttributeChange(locationProgressBar, "style", progressBarBefore);
 
         return new CareersPage(driver);
@@ -104,7 +104,9 @@ public class CareersPage extends BasePage {
     public CareersPage clickLocationLeftArrowIcon() {
         String progressBarBefore = getElementAttribute(locationProgressBar, "style");
 
-        driver.findElement(locationLeftArrowIcon).click();
+        WebElement leftArrowIcon = driver.findElement(locationLeftArrowIcon);
+        driver.hoverToElement(leftArrowIcon);
+        leftArrowIcon.click();
         driver.waitUntilElementAttributeChange(locationProgressBar, "style", progressBarBefore);
 
         return new CareersPage(driver);

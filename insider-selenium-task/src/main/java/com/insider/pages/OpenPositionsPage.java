@@ -79,7 +79,7 @@ public class OpenPositionsPage extends BasePage {
 
     public OpenPositionsPage hoverMouseToPositionItem(int itemIndex) {
         driver.hoverElementWithPosition(driver.findElements(positionItems).get(itemIndex), 1, 1);
-        Assert.assertTrue(driver.findElement(viewRoleButton).isDisplayed());
+        driver.waitUntilElementVisible(viewRoleButton);
 
         return new OpenPositionsPage(driver);
     }

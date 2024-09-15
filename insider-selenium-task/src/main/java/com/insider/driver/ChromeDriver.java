@@ -102,6 +102,7 @@ public class ChromeDriver implements Driver {
     @Override
     public void hoverElementWithPosition(WebElement element, int rightPixel, int downPixel) {
         Actions actions = new Actions(webDriver);
+        actions.moveToElement(element).perform();
         actions.moveToElement(element, rightPixel, downPixel).perform();
         LogUtils.logInfo(format("Hovered to web element: %s with position: %d right - %d down pixels",
                 element.getAttribute("class"), rightPixel, downPixel));
@@ -136,19 +137,28 @@ public class ChromeDriver implements Driver {
 
     @Override
     public void waitUntilAllElementsTextDesired(By locator, String text) {
-        webDriverWait.until((ExpectedCondition<Boolean>) driver -> {
-            List<WebElement> elements = webDriver.findElements(locator);
-            return elements.stream().allMatch(element -> element.getText().equals(text));
-        });
+        try {
+            webDriverWait.until((ExpectedCondition<Boolean>) driver -> {
+                List<WebElement> elements = webDriver.findElements(locator);
+                return elements.stream().allMatch(element -> element.getText().equals(text));
+            });
+        } catch (TimeoutException e) {
+            throw new TimeoutException(format("All elements texts located by: %s not equal to desired text: %s",
+                    locator, text));
+        }
     }
 
     @Override
     public void waitUntilElementAttributeChange(By locator, String attributeName, String firstAttributeValue) {
-        webDriverWait.until((ExpectedCondition<Boolean>) driver -> {
-            WebElement element = webDriver.findElement(locator);
-            System.out.println(element.getAttribute(attributeName));
-            return !element.getAttribute(attributeName).equals(firstAttributeValue);
-        });
+        try {
+            webDriverWait.until((ExpectedCondition<Boolean>) driver -> {
+                WebElement element = webDriver.findElement(locator);
+                return !element.getAttribute(attributeName).equals(firstAttributeValue);
+            });
+        } catch (TimeoutException e) {
+            throw new TimeoutException(format("Element %s attribute located by: %s not changed from last attribute value: %s",
+                    attributeName, locator, firstAttributeValue));
+        }
     }
 
     @Override
@@ -172,7 +182,7 @@ public class ChromeDriver implements Driver {
     }
 
     @Override
-    public void takeScreenshotAndSaveToFile(String testName) {
+    public File takeScreenshotAndSaveToFile(String testName) {
         File srcFile = ((TakesScreenshot) webDriver).getScreenshotAs(OutputType.FILE);
 
         try {
@@ -183,5 +193,7 @@ public class ChromeDriver implements Driver {
         } catch (IOException e) {
             LogUtils.logError("Failed to save screenshot: " + e.getMessage());
         }
+
+        return srcFile;
     }
 }

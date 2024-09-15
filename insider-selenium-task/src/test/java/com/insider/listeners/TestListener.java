@@ -2,9 +2,14 @@ package com.insider.listeners;
 
 import com.insider.base.BaseTest;
 import com.insider.driver.Driver;
+import io.qameta.allure.Allure;
+import org.apache.commons.io.FileUtils;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+
+import java.io.File;
+import java.io.IOException;
 
 import static com.insider.utils.LogUtils.logError;
 import static com.insider.utils.LogUtils.logInfo;
@@ -40,7 +45,13 @@ public class TestListener implements ITestListener {
         Driver driver = ((BaseTest) testClass).driver;
 
         String testName = iTestResult.getName();
-        driver.takeScreenshotAndSaveToFile(testName);
+        File screenshotFile = driver.takeScreenshotAndSaveToFile(testName);
+
+        try {
+            Allure.addAttachment("Failure Screenshot", FileUtils.openInputStream(screenshotFile));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         logError("Test Failed and saved screenshot");
     }

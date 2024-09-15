@@ -3,11 +3,7 @@ package com.insider.base;
 import com.insider.driver.*;
 import com.insider.listeners.TestListener;
 import com.insider.pages.BasePage;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
-
-import java.util.Locale;
+import org.testng.annotations.*;
 
 import static com.insider.utils.Config.*;
 
@@ -20,7 +16,7 @@ public class BaseTest {
     protected static final String URL = getProperty("baseUrl");
     protected static final int waitTimeDuration = Integer.parseInt(getProperty("waitTimeDuration"));
 
-    @BeforeMethod
+    @BeforeClass
     public void testInit() {
         getDriver();
         driver.start(waitTimeDuration);
@@ -29,7 +25,7 @@ public class BaseTest {
         basePage.acceptAllCookies();
     }
 
-    @AfterMethod
+    @AfterClass
     public void tearDown() {
         driver.quit();
     }

@@ -6,14 +6,21 @@ import com.insider.enums.Location;
 import com.insider.enums.PageTitle;
 import com.insider.pages.HomePage;
 import com.insider.pages.QualityAssurancePage;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.Test;
 
 import java.util.List;
 import java.util.Map;
 
+@Feature("CareersTestUI")
 public class CareersTests extends BaseTest {
 
     @Test
+    @Description("As a User, I want to go to Careers Page and see page components from using Home Page main dropdown.")
+    @Severity(SeverityLevel.NORMAL)
     public void should_GetCareersPageAndComponentsFromHomePage() {
         final Map<String, String> dropdownOptions = Map.of("name", "Company",
                 "subName", "Careers");
@@ -44,6 +51,8 @@ public class CareersTests extends BaseTest {
     }
 
     @Test
+    @Description("As a User, I want to see Quality Assurance job lever page from Open Positions page with filtering open positions.")
+    @Severity(SeverityLevel.CRITICAL)
     public void should_GetQaJobsLeverPageFromQaCareersPageWithOpenPositionsPage() {
         final Location positionLocation = Location.TURKEY_ISTANBUL;
         final Department positionDepartment = Department.QUALITY_ASSURANCE;

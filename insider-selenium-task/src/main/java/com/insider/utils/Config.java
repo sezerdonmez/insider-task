@@ -42,7 +42,7 @@ public class Config {
     }
 
     public static String getBrowser() {
-        String defaultBrowser = loadProperties("test").getProperty("defaultBrowser");
+        String defaultBrowser = loadProperties(getEnv()).getProperty("defaultBrowser");
         String browser = System.getProperties().getProperty("browser");
 
         if (isBlank(browser)) {
