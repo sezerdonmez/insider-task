@@ -9,6 +9,8 @@ import org.testng.Assert;
 
 import java.util.List;
 
+import static java.lang.String.format;
+
 public class CareersPage extends BasePage {
     private final By mainTitle = By.cssSelector(".big-title");
     private final By categoryTitles = By.cssSelector(".category-title-media");
@@ -66,8 +68,7 @@ public class CareersPage extends BasePage {
     }
 
     public CareersPage checkLocationCityIsVisible(String cityName) {
-        driver.wait(5);
-        WebElement locationCity = getElementWithTextInList(driver.findElements(locationCityNames), cityName);
+        WebElement locationCity = driver.findElement(By.cssSelector(format("[alt='%s']", cityName)));
         driver.hoverToElement(locationCity);
         Assert.assertTrue(locationCity.isDisplayed());
 
@@ -92,18 +93,19 @@ public class CareersPage extends BasePage {
     }
 
     public CareersPage clickLocationRightArrowIcon() {
-        Double progressBarBefore = getProgressBarCurrentProgress();
+        String progressBarBefore = getElementAttribute(locationProgressBar, "style");
+
         driver.findElement(locationRightArrowIcon).click();
-        Assert.assertNotEquals(getProgressBarCurrentProgress(), progressBarBefore, "Should change progress bar progress");
+        driver.waitUntilElementAttributeChange(locationProgressBar, "style", progressBarBefore);
 
         return new CareersPage(driver);
     }
 
     public CareersPage clickLocationLeftArrowIcon() {
-        driver.wait(10);
-        Double progressBarBefore = getProgressBarCurrentProgress();
+        String progressBarBefore = getElementAttribute(locationProgressBar, "style");
+
         driver.findElement(locationLeftArrowIcon).click();
-        Assert.assertNotEquals(getProgressBarCurrentProgress(), progressBarBefore, "Should change progress bar progress");
+        driver.waitUntilElementAttributeChange(locationProgressBar, "style", progressBarBefore);
 
         return new CareersPage(driver);
     }
@@ -112,22 +114,10 @@ public class CareersPage extends BasePage {
         for (By calling : callings) driver.waitUntilElementExist(calling);
     }
 
-    private Double getProgressBarCurrentProgress() {
-        return Double.parseDouble(StringHelper.getNumericValueFromText(getElementAttribute(locationProgressBar, "style")));
-    }
+    public void waitUntilSliderNextImage() {
+        String attributeName = "style";
+        String currentImageStyle = getElementAttribute(sliderActiveImage, attributeName);
 
-    public void waitUntilSliderNextImage(int maxWaitTime) {
-        String currentImageStyle = getElementAttribute(sliderActiveImage, "style");
-
-        boolean isNextSlide = false;
-        for (int i = 0; i < maxWaitTime; i++) {
-            if (!getElementAttribute(sliderActiveImage, "style").equals(currentImageStyle)) {
-                isNextSlide = true;
-                break;
-            }
-            driver.wait(2);
-        }
-
-        Assert.assertFalse(isNextSlide, "Slider cannot slide images");
+        driver.waitUntilElementAttributeChange(sliderActiveImage, attributeName, currentImageStyle);
     }
 }

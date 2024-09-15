@@ -69,21 +69,6 @@ public class BasePage {
         return elementList.get(indexOfElement);
     }
 
-    public void waitForElementCountInListDesired(By by, int maxElementCount, int maxWaitTime) {
-        boolean isElementCountDesired = false;
-
-        for (int i = 0; i < maxWaitTime; i++) {
-            List<WebElement> elements = driver.findElements(by);
-            if (elements.size() < maxElementCount && elements.size() > 0) {
-                isElementCountDesired = true;
-                break;
-            }
-            driver.wait(3);
-        }
-
-        Assert.assertTrue(isElementCountDesired, "Element count not to be desired count after waiting");
-    }
-
     public void typeTextToElement (By by, String text) {
         WebElement elementToTypeText = driver.findElement(by);
         elementToTypeText.clear();

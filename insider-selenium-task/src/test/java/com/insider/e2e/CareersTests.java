@@ -35,18 +35,18 @@ public class CareersTests extends BaseTest {
                 .clickLocationRightArrowIcon()
                 .checkLocationCityIsVisible(Location.HOLLAND.getCity())
                 .clickLocationLeftArrowIcon()
+                .checkLocationCityIsVisible(Location.USA.getCity())
                 .clickLocationLeftArrowIcon()
                 .checkLocationCityIsVisible(Location.CHILE.getCity())
                 .checkDefaultSizeTitleIsVisible(PageTitle.LIFE_AT_INSIDER.getTitle())
                 .checkLifeAtInsiderSliderImagesAreVisible()
-                .waitUntilSliderNextImage(3);
+                .waitUntilSliderNextImage();
     }
 
     @Test
     public void should_GetQaJobsLeverPageFromQaCareersPageWithOpenPositionsPage() {
         final Location positionLocation = Location.TURKEY_ISTANBUL;
         final Department positionDepartment = Department.QUALITY_ASSURANCE;
-        final int maxQaPositionCount = 3;
 
         new QualityAssurancePage(driver)
                 .getQualityAssurancePage(URL)
@@ -59,8 +59,8 @@ public class CareersTests extends BaseTest {
                 .clickLocationSelectBoxOption(positionLocation)
                 .checkCurrentSelectedLocation(positionLocation)
                 .checkCurrentDepartment(positionDepartment)
-                .checkAllPositionsDepartments(maxQaPositionCount, positionDepartment)
-                .checkAllPositionsLocations(maxQaPositionCount, positionLocation)
+                .checkAllPositionsDepartments(positionDepartment)
+                .checkAllPositionsLocations(positionLocation)
                 .hoverMouseToPositionItem(0)
                 .clickViewRoleButton(0)
                 .checkJobsLeverPageOpened(positionDepartment.getName(), positionLocation.getName());

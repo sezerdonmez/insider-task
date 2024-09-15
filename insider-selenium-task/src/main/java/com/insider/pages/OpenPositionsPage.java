@@ -12,7 +12,6 @@ public class OpenPositionsPage extends BasePage {
     private final By departmentSelectBox = By.cssSelector("span [id*='filter-by-department']");
     private final By positionDepartments = By.cssSelector(".position-department");
     private final By positionLocations = By.cssSelector(".position-location");
-    private final By totalJobResult = By.cssSelector(".totalResult");
     private final By positionItems = By.cssSelector(".position-list-item");
     private final By viewRoleButton = By.cssSelector("[href*='/jobs.lever.co/useinsider/']");
 
@@ -33,20 +32,16 @@ public class OpenPositionsPage extends BasePage {
     }
 
     public OpenPositionsPage checkCurrentDepartment(Department department) {
+        waitForPositionDepartmentsDesired(department);
+
         By elementLocator = By.cssSelector(String.format("[title='%s']", department.getName()));
         Assert.assertTrue(driver.findElement(elementLocator).isDisplayed());
 
         return new OpenPositionsPage(driver);
     }
 
-    public OpenPositionsPage waitForPositionDepartmentsDesired(int maxPositionCount) {
-        waitForElementCountInListDesired(positionItems, maxPositionCount, 50);
-        driver.wait(10);
-        return new OpenPositionsPage(driver);
-    }
-
-    public OpenPositionsPage waitForAjax() {
-        driver.waitForAjax();
+    public OpenPositionsPage waitForPositionDepartmentsDesired(Department department) {
+        driver.waitUntilAllElementsTextDesired(positionDepartments, department.getName());
         return new OpenPositionsPage(driver);
     }
 
@@ -68,17 +63,15 @@ public class OpenPositionsPage extends BasePage {
         return new OpenPositionsPage(driver);
     }
 
-    public OpenPositionsPage checkAllPositionsDepartments(int maxPositionJobCount, Department department) {
-        waitForAjax();
+    public OpenPositionsPage checkAllPositionsDepartments(Department department) {
+        waitForPositionDepartmentsDesired(department);
 
         checkAllElementsTextsEquals(positionDepartments, department.getName());
 
         return new OpenPositionsPage(driver);
     }
 
-    public OpenPositionsPage checkAllPositionsLocations(int maxPositionJobCount, Location location) {
-        waitForAjax();
-
+    public OpenPositionsPage checkAllPositionsLocations(Location location) {
         checkAllElementsTextsEquals(positionLocations, location.getName());
 
         return new OpenPositionsPage(driver);
