@@ -10,3 +10,7 @@ target
 ######################
 .DS_Store
 insider-selenium-task.iml
+
+# Screnshot Files
+######################
+src/test/resources/screenshots
