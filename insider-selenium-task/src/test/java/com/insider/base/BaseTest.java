@@ -29,10 +29,10 @@ public class BaseTest {
         basePage.acceptAllCookies();
     }
 
-   /* @AfterMethod
+    @AfterMethod
     public void tearDown() {
         driver.quit();
-    }*/
+    }
 
     private void getDriver() {
         String browserName = getBrowser();

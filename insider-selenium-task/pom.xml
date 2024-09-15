@@ -19,6 +19,10 @@
     <junit.version>5.8.0</junit.version>
     <lombok.version>1.18.34</lombok.version>
     <log4j.version>2.15.0</log4j.version>
+    <aspectj.version>1.9.4</aspectj.version>
+    <allure.version>2.13.3</allure.version>
+    <suiteXmlFile>${project.basedir}/src/test/resources/suites/${suiteFile}</suiteXmlFile>
+    <suiteFile>regression.xml</suiteFile>
   </properties>
 
   <dependencies>
@@ -47,6 +51,12 @@
       <artifactId>log4j-core</artifactId>
       <version>${log4j.version}</version>
     </dependency>
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-testng</artifactId>
+      <version>${allure.version}</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -63,10 +73,33 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.13.0</version>
+          <configuration>
+            <source>1.7</source>
+            <target>1.7</target>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.3.0</version>
+          <configuration>
+            <suiteXmlFiles>
+              <suiteXmlFile>${suiteXmlFile}</suiteXmlFile>
+            </suiteXmlFiles>
+            <argLine>
+              -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+            </argLine>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.aspectj</groupId>
+              <artifactId>aspectjweaver</artifactId>
+              <version>${aspectj.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.2.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
