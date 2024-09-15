@@ -1,0 +1,12 @@
+# IDE Generated Files
+######################
+.idea
+
+# Target Files
+######################
+target
+
+# OS Generated Files
+######################
+.DS_Store
+insider-selenium-task.iml
